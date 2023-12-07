@@ -1,0 +1,26 @@
+"on":
+  workflow_call:
+
+jobs:
+  dependabot:
+    name: Merge PR
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+
+    steps:
+      - name: Load Dependabot meta-data
+        uses: dependabot/fetch-metadata@v1.6.0
+        id: dependabot-metadata
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Auto-merge minor/patch updates to approved dependencies
+        run: gh pr merge "${{ github.event.pull_request.html_url }}" --merge --auto
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: >
+          steps.dependabot-metadata.outputs.update-type != 'version-update:semver-major'
+          && (
+            startsWith(steps.dependabot-metadata.outputs.dependency-names, 'github.com/cuerator-io/')
+            || startsWith(steps.dependabot-metadata.outputs.dependency-names, 'github.com/dogmatiq/')
+          )
