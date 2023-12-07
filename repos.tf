@@ -5,3 +5,10 @@ module "repo_cuerator" {
   languages   = ["go"]
   workflow    = "go"
 }
+
+module "repo_examples" {
+  source      = "./modules/repo"
+  name        = "examples"
+  description = "Example Cuerator collections."
+  languages   = []
+}

@@ -3,7 +3,7 @@ locals {
     "${path.module}/../../.github/workflows/shared-${local.workflow}.yml",
   ) : null
 
-  workflow_call    = yamldecode(local.workflow_content).on.workflow_call
+  workflow_call    = local.workflow != null ? yamldecode(local.workflow_content).on.workflow_call : {}
   workflow_secrets = [for key, value in try(local.workflow_call.secrets, {}) : key]
 
   workflow_ref_content = local.workflow != null ? templatefile(
