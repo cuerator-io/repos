@@ -11,7 +11,7 @@ resource "github_repository_file" "license" {
     "${path.module}/templates/license-${var.license}.tftpl",
     {
       start_year = time_static.copyright_start.year
-      end_year   = formatdate("YYYY", timestamp())
+      end_year   = formatdate("YYYY", plantimestamp())
       holders    = ["James Harris"]
     }
   )
